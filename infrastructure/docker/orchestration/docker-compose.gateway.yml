@@ -1,0 +1,38 @@
+name: the-terminal
+
+include:
+  - path: ../storage/docker-compose.storage.yml
+
+services:
+  gateway:
+    build:
+      context: ../../../
+      dockerfile: services/gateway/Dockerfile
+    container_name: terminal-gateway
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PORT=8000
+      - REDIS_HOST=redis
+      - TERMINAL_CH_HOST=clickhouse
+      - TERMINAL_CH_PORT=8123
+      - TERMINAL_CH_USER=admin
+      - TERMINAL_CH_PASS=admin_password
+      - TERMINAL_CH_DB=terminal
+    networks:
+      - the-terminal-network
+    ports:
+      - "28000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
+
+networks:
+  the-terminal-network:
+    name: the-terminal-network
+    external: true

@@ -1,0 +1,122 @@
+{
+	"folders": {},
+	"connections": {
+		"postgres-metadata": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "The Terminal - PostgreSQL",
+			"save-password": true,
+			"configuration": {
+				"host": "postgres",
+				"port": "5432",
+				"database": "postgres",
+				"url": "jdbc:postgresql://postgres:5432/postgres",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"auth-model": "native"
+			},
+			"extensions": {
+				"ai.assistant": {
+					"confirmed": true,
+					"mcpEnabled": false
+				}
+			}
+		},
+		"postgres-metadata-external": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "The Terminal - Metadata (Postgres)",
+			"save-password": true,
+			"configuration": {
+				"host": "postgres",
+				"port": "5432",
+				"database": "metadata",
+				"url": "jdbc:postgresql://postgres:5432/metadata",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"auth-model": "native"
+			}
+		},
+		"postgres-dagster": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "The Terminal - Dagster (Postgres)",
+			"save-password": true,
+			"configuration": {
+				"host": "postgres",
+				"port": "5432",
+				"database": "dagster",
+				"url": "jdbc:postgresql://postgres:5432/dagster",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"auth-model": "native"
+			}
+		},
+		"clickhouse-analytics": {
+			"provider": "clickhouse",
+			"driver": "clickhouse_jdbc",
+			"name": "The Terminal - ClickHouse",
+			"save-password": true,
+			"configuration": {
+				"host": "clickhouse",
+				"port": "8123",
+				"database": "default",
+				"url": "jdbc:clickhouse://clickhouse:8123/default",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"auth-model": "native"
+			}
+		},
+		"com_clickhouse-19ff0dfb27a-4d0233c732336467": {
+			"provider": "clickhouse",
+			"driver": "com_clickhouse",
+			"name": "ClickHouse@clickhouse",
+			"save-password": true,
+			"configuration": {
+				"url": "jdbc:clickhouse://clickhouse:8123/default",
+				"configurationType": "URL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"colorDark": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": true,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
+		}
+	},
+	"drivers": {
+		"clickhouse": {
+			"clickhouse_jdbc": {
+				"provider": "clickhouse",
+				"id": "clickhouse_jdbc",
+				"name": "clickhouse_jdbc",
+				"class": null,
+				"description": "Missing driver clickhouse_jdbc",
+				"custom": true,
+				"embedded": false,
+				"propagateDriverProperties": false,
+				"anonymous": false,
+				"allowsEmptyPassword": false,
+				"instantiable": true
+			}
+		}
+	}
+}

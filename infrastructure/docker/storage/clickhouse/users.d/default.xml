@@ -1,0 +1,15 @@
+<clickhouse>
+    <users>
+        <default>
+            <password remove="1"/>
+            <no_password/>
+            <!-- Lock down network access to localhost only -->
+            <networks>
+                <ip>::1</ip>
+                <ip>127.0.0.1</ip>
+            </networks>
+            <!-- Assign to a restricted profile -->
+            <profile>readonly</profile>
+        </default>
+    </users>
+</clickhouse>

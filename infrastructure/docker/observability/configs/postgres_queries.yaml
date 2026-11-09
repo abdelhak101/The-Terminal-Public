@@ -1,0 +1,26 @@
+terminal_registry_assets:
+  query: "SELECT count(*) FROM assets"
+  master: true
+  metrics:
+    - count:
+        usage: "GAUGE"
+        description: "Total number of registered assets"
+
+terminal_registry_lineage_status:
+  query: "SELECT status, count(*) FROM lineage_log GROUP BY status"
+  master: true
+  metrics:
+    - status:
+        usage: "LABEL"
+        description: "Status of the lineage run"
+    - count:
+        usage: "GAUGE"
+        description: "Count of lineage runs by status"
+
+terminal_registry_columns:
+  query: "SELECT count(*) FROM asset_columns"
+  master: true
+  metrics:
+    - count:
+        usage: "GAUGE"
+        description: "Total number of registered columns"

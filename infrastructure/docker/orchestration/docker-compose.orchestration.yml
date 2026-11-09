@@ -1,0 +1,60 @@
+name: the-terminal
+
+include:
+  - path: ../storage/docker-compose.storage.yml
+
+services:
+  dagster-webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: terminal-dagster-webserver
+    restart: always
+    command: ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "workspace.yaml"]
+    environment:
+      - DAGSTER_POSTGRES_USER=${POSTGRES_USER:-admin}
+      - DAGSTER_POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-admin_password}
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - DAGSTER_HOME=/opt/dagster/dagster_home
+      - PYTHONPATH=/opt/dagster/app
+    volumes:
+      - ./dagster.yaml:/opt/dagster/dagster_home/dagster.yaml
+      - ../../../:/opt/dagster/app
+      - ./workspace.yaml:/opt/dagster/app/workspace.yaml
+      - ./definitions.py:/opt/dagster/app/definitions.py
+    networks:
+      - the-terminal-network
+    ports:
+      - "23001:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  dagster-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: terminal-dagster-daemon
+    restart: always
+    command: ["dagster-daemon", "run", "-w", "workspace.yaml"]
+    environment:
+      - DAGSTER_POSTGRES_USER=${POSTGRES_USER:-admin}
+      - DAGSTER_POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-admin_password}
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - DAGSTER_HOME=/opt/dagster/dagster_home
+      - PYTHONPATH=/opt/dagster/app
+    volumes:
+      - ./dagster.yaml:/opt/dagster/dagster_home/dagster.yaml
+      - ../../../:/opt/dagster/app
+      - ./workspace.yaml:/opt/dagster/app/workspace.yaml
+      - ./definitions.py:/opt/dagster/app/definitions.py
+    networks:
+      - the-terminal-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  the-terminal-network:
+    name: the-terminal-network
+    external: true

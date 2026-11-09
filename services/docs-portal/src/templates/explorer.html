@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Explorer - {{ symbol }}</title>
+    <link rel="stylesheet" href="/static/css/explorer.css">
+    <script src="https://unpkg.com/lightweight-charts@4.2.1/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+    <div class="explorer-container">
+        <header>
+            <div class="breadcrumb">
+                <a href="/inventory/dashboard">Vault</a> / {{ library }} / <span class="current">{{ symbol }}</span>
+            </div>
+            <div class="header-main">
+                <div class="title-group">
+                    <h1>{{ symbol }} <span class="label-badge">{{ label }}</span></h1>
+                    <div class="library-badge">{{ library|upper }}</div>
+                </div>
+                <div class="actions">
+                    <button id="btn-delete" class="btn btn-danger">Delete Asset</button>
+                    <button onclick="window.location.reload()" class="btn btn-secondary">Refresh</button>
+                </div>
+            </div>
+            
+            <div class="metadata-grid">
+                <div class="meta-item">
+                    <div class="meta-label">Total Rows</div>
+                    <div class="meta-value" id="meta-rows">{{ "{:,}".format(metadata.row_count) }}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Storage Size</div>
+                    <div class="meta-value" id="meta-size">{{ "{:.1f}".format(metadata.size_bytes / 1024) }} KB</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Last Updated</div>
+                    <div class="meta-value" id="meta-updated">{{ metadata.last_updated or 'N/A' }}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Gateway Links</div>
+                    <div class="meta-value" style="font-size: 13px;">
+                        <a href="http://localhost:28000/v1/assets/{{ symbol }}/manifest" target="_blank" style="color: #2196F3; text-decoration: none;">Manifest</a> |
+                        <a href="http://localhost:28000/v1/data/{{ library }}/{{ symbol }}" target="_blank" style="color: #2196F3; text-decoration: none;">Data</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            {% if library != 'bronze' %}
+            <section class="chart-section">
+                <div class="section-header">
+                    <h2>Visual Snapshot</h2>
+                    <div id="chart-status" class="status-text">Loading...</div>
+                </div>
+                <div id="chart-container" class="chart-container"></div>
+            </section>
+            {% endif %}
+
+            <section class="data-section">
+                <div class="section-header">
+                    <h2>Data Deep-Dive</h2>
+                    <div class="pagination-controls">
+                        <button id="prev-page" class="btn btn-sm" disabled>Previous</button>
+                        <span id="page-info">Page 1</span>
+                        <button id="next-page" class="btn btn-sm">Next</button>
+                    </div>
+                </div>
+                <div id="grid-container" class="grid-container">
+                    <table id="data-table">
+                        <thead>
+                            <tr id="table-head"></tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <tr><td colspan="100%" class="loading-cell">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Inject server-side variables into JS scope
+        const ASSET_CONFIG = {
+            library: "{{ library }}",
+            symbol: "{{ symbol }}",
+            label: "{{ label }}"
+        };
+    </script>
+    <script src="/static/js/explorer.js"></script>
+</body>
+</html>

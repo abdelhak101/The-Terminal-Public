@@ -1,0 +1,14 @@
+name: the-terminal
+
+include:
+  - path: infrastructure/docker/storage/docker-compose.storage.yml
+  - path: infrastructure/docker/streaming/docker-compose.streaming.yml
+  - path: infrastructure/docker/observability/docker-compose.observability.yml
+  - path: infrastructure/docker/orchestration/docker-compose.orchestration.yml
+  - path: infrastructure/docker/orchestration/docker-compose.gateway.yml
+  - path: infrastructure/docker/orchestration/docker-compose.docs.yml
+
+networks:
+  the-terminal-network:
+    name: the-terminal-network
+    driver: bridge

@@ -1,0 +1,109 @@
+name: the-terminal
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: terminal-postgres
+    restart: always
+    env_file:
+      - ../../../.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin_password}
+      POSTGRES_DB: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - the-terminal-network
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U ${POSTGRES_USER:-admin} -d postgres -c 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "25432:5432"
+
+  postgres-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter:latest
+    container_name: terminal-postgres-exporter
+    restart: always
+    env_file:
+      - ../../../.env
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-admin_password}@postgres:5432/metadata?sslmode=disable"
+      PG_EXPORTER_EXTEND_QUERY_PATH: "/etc/postgres_exporter/postgres_queries.yaml"
+    volumes:
+      - ../observability/configs/postgres_queries.yaml:/etc/postgres_exporter/postgres_queries.yaml
+    command:
+      - '--extend.query-path=/etc/postgres_exporter/postgres_queries.yaml'
+    networks:
+      - the-terminal-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    container_name: terminal-redis
+    restart: always
+    networks:
+      - the-terminal-network
+    ports:
+      - "26379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.3-alpine
+    container_name: terminal-clickhouse
+    restart: always
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./clickhouse/users.d/admin.xml:/etc/clickhouse-server/users.d/admin.xml:ro
+      - ./clickhouse/users.d/default.xml:/etc/clickhouse-server/users.d/default.xml:ro
+      - ./clickhouse/config.d/database.xml:/etc/clickhouse-server/config.d/database.xml:ro
+      - ./clickhouse/config.d/network.xml:/etc/clickhouse-server/config.d/network.xml:ro
+      - ./clickhouse/config.d/logging.xml:/etc/clickhouse-server/config.d/logging.xml:ro
+    networks:
+      - the-terminal-network
+    ports:
+      - "28123:8123"
+      - "29000:9000"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "127.0.0.1:8123/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: terminal-cloudbeaver
+    restart: always
+    environment:
+      - CB_SERVER_NAME=TheTerminal
+      - CB_SERVER_URL=http://localhost:28900
+      - CB_ADMIN_NAME=cbadmin
+      - CB_ADMIN_PASSWORD=ycQE4mniT8hztum
+    ports:
+      - "28900:8978"
+    volumes:
+      - cloudbeaver_data:/opt/cloudbeaver/workspace
+      - ./cloudbeaver/data-sources.json:/opt/cloudbeaver/workspace/GlobalConfiguration/.dbeaver/data-sources.json
+    networks:
+      - the-terminal-network
+
+networks:
+  the-terminal-network:
+    external: true
+
+volumes:
+  pg_data:
+    name: the-terminal-pg-data
+  clickhouse_data:
+    name: the-terminal-clickhouse-data
+  cloudbeaver_data:
+    name: the-terminal-cloudbeaver-data

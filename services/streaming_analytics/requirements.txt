@@ -1,0 +1,15 @@
+numpy<2.0.0
+pandas==1.5.3
+redis==5.0.1
+bytewax==0.17.0
+confluent-kafka==2.1.1
+psycopg2-binary==2.9.6
+python-dotenv==1.0.0
+prometheus-client==0.17.1
+pydantic==2.0.2
+requests
+fastavro
+protobuf<5.0.0
+clickhouse-connect>=0.7.0
+opentelemetry-api==1.18.0
+PyYAML

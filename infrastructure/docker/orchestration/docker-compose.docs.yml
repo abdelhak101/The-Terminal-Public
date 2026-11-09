@@ -1,0 +1,35 @@
+services:
+  docs-portal:
+    build:
+      context: ../../../
+      dockerfile: services/docs-portal/Dockerfile
+    container_name: docs-portal
+    ports:
+      - "23002:23002"
+    environment:
+      - DOCS_ROOT=/docs
+      - GATEWAY_URL=http://gateway:8000
+      - PORT=23002
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_password
+      - TERMINAL_CH_HOST=clickhouse
+      - TERMINAL_CH_PORT=8123
+      - TERMINAL_CH_USER=admin
+      - TERMINAL_CH_PASS=admin_password
+      - TERMINAL_CH_DB=terminal
+      - FRED_API_KEY=${FRED_API_KEY}
+    volumes:
+      - ../../../docs:/docs
+      - ../../../shared:/app/shared
+      - ../../../adapters:/app/adapters
+    networks:
+      - the-terminal-network
+    depends_on:
+      - gateway
+      - postgres
+      - clickhouse
+
+networks:
+  the-terminal-network:
+    external: true

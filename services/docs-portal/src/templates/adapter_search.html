@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adapter Search - Register Source Config</title>
+    <link rel="stylesheet" href="/static/css/adapter_search.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="breadcrumb">
+                <a href="/inventory/dashboard">Vault</a> / <span class="current">Adapter Search</span>
+            </div>
+            <div class="header-main">
+                <h1>Adapter Search</h1>
+                <p>Search for data identifiers and generate register_source_job config</p>
+            </div>
+        </header>
+
+        <section class="adapter-cards-section">
+            <h2>Available Adapters</h2>
+            <div class="adapter-cards-grid">
+
+                <!-- Yahoo Finance -->
+                <div class="adapter-card">
+                    <div class="adapter-card-header">
+                        <span class="badge badge-market">Market</span>
+                        <span class="badge badge-searchable">&#x1F50D; Searchable</span>
+                    </div>
+                    <h3 class="adapter-card-name">Yahoo Finance</h3>
+                    <p class="adapter-card-desc">OHLCV market data for equities, ETFs, and indices</p>
+                    <div class="adapter-card-meta">
+                        <span class="meta-item">&#x1F50C; <code>yfinance</code> Python library</span>
+                        <span class="meta-item">&#x1F513; No API key required</span>
+                    </div>
+                    <a class="adapter-card-link" href="https://finance.yahoo.com" target="_blank" rel="noopener">&#x1F517; finance.yahoo.com</a>
+                </div>
+
+                <!-- FRED -->
+                <div class="adapter-card">
+                    <div class="adapter-card-header">
+                        <span class="badge badge-macro">Macro</span>
+                        <span class="badge badge-searchable">&#x1F50D; Searchable</span>
+                    </div>
+                    <h3 class="adapter-card-name">FRED</h3>
+                    <p class="adapter-card-desc">Federal Reserve Economic Data &mdash; 800k+ economic time series</p>
+                    <div class="adapter-card-meta">
+                        <span class="meta-item">&#x1F50C; REST API</span>
+                        <span class="meta-item">&#x1F511; <code>FRED_API_KEY</code> required</span>
+                    </div>
+                    <a class="adapter-card-link" href="https://fred.stlouisfed.org" target="_blank" rel="noopener">&#x1F517; fred.stlouisfed.org</a>
+                </div>
+
+                <!-- BLS -->
+                <div class="adapter-card">
+                    <div class="adapter-card-header">
+                        <span class="badge badge-macro">Macro</span>
+                        <span class="badge badge-searchable">&#x1F50D; Searchable</span>
+                    </div>
+                    <h3 class="adapter-card-name">BLS</h3>
+                    <p class="adapter-card-desc">Bureau of Labor Statistics &mdash; CPI, employment, PPI, JOLTS</p>
+                    <div class="adapter-card-meta">
+                        <span class="meta-item">&#x1F50C; REST API</span>
+                        <span class="meta-item">&#x1F511; <code>BLS_API_KEY</code> optional</span>
+                    </div>
+                    <a class="adapter-card-link" href="https://www.bls.gov/developers/" target="_blank" rel="noopener">&#x1F517; bls.gov/developers</a>
+                </div>
+
+                <!-- Census -->
+                <div class="adapter-card">
+                    <div class="adapter-card-header">
+                        <span class="badge badge-macro">Macro</span>
+                        <span class="badge badge-searchable">&#x1F50D; Searchable</span>
+                    </div>
+                    <h3 class="adapter-card-name">Census</h3>
+                    <p class="adapter-card-desc">US Census Bureau &mdash; housing starts, permits, trade, retail</p>
+                    <div class="adapter-card-meta">
+                        <span class="meta-item">&#x1F50C; REST API</span>
+                        <span class="meta-item">&#x1F511; <code>CENSUS_API_KEY</code> optional</span>
+                    </div>
+                    <a class="adapter-card-link" href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">&#x1F517; census.gov/data/developers</a>
+                </div>
+
+                <!-- Moneycontrol -->
+                <div class="adapter-card">
+                    <div class="adapter-card-header">
+                        <span class="badge badge-macro">Macro</span>
+                        <span class="badge badge-direct">&#x1F517; Direct URL (No Search)</span>
+                    </div>
+                    <h3 class="adapter-card-name">Moneycontrol</h3>
+                    <p class="adapter-card-desc">Economic calendar statistical time series (CPI, PMI, GDP, etc.)</p>
+                    <div class="adapter-card-meta">
+                        <span class="meta-item">&#x1F50C; Direct REST Endpoint</span>
+                        <span class="meta-item">&#x1F513; No API key required</span>
+                        <span class="meta-item meta-note">&#x1F4A1; <strong>How to find URL:</strong> Inspect browser (<code>F12</code>) &rarr; <strong>Network</strong> tab &rarr; look for <code>get-stats-data?calendarId=...</code></span>
+                        <div class="meta-example">
+                            <code>identifier: "https://api.moneycontrol.com/mcapi/v1/ecalendar/get-stats-data?calendarId=1414914&amp;duration="</code>
+                        </div>
+                    </div>
+                    <a class="adapter-card-link" href="https://www.moneycontrol.com/economic-calendar" target="_blank" rel="noopener">&#x1F517; moneycontrol.com/economic-calendar</a>
+                </div>
+
+            </div>
+        </section>
+
+        <main>
+            <section class="search-section">
+                <div class="form-group">
+                    <label for="adapter-select">Adapter:</label>
+                    <select id="adapter-select">
+                        <option value="">All Searchable Adapters</option>
+                    </select>
+                </div>
+                <div class="form-group search-group">
+                    <input type="text" id="search-input" placeholder="Enter search query...">
+                    <button id="search-btn" class="btn btn-primary">Search</button>
+                </div>
+                <div id="search-errors" class="errors"></div>
+            </section>
+
+            <section id="results-section" class="results-section hidden">
+                <h2>Search Results</h2>
+                <div id="results-container"></div>
+            </section>
+
+            <section id="config-section" class="config-section hidden">
+                <h2>Configuration</h2>
+                <div id="config-form"></div>
+                <div class="config-actions">
+                    <button id="generate-btn" class="btn btn-primary">Generate Config</button>
+                </div>
+                <div id="config-output" class="config-output hidden">
+                    <h3>Generated YAML Config</h3>
+                    <pre><code id="config-code"></code></pre>
+                    <button id="copy-btn" class="btn btn-secondary">Copy to Clipboard</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/adapter_search.js"></script>
+</body>
+</html>

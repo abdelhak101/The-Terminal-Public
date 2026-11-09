@@ -1,0 +1,7 @@
+<clickhouse>
+    <databases>
+        <terminal>
+            <engine>Atomic</engine>
+        </terminal>
+    </databases>
+</clickhouse>

@@ -1,0 +1,84 @@
+name: the-terminal
+
+include:
+  - path: ../storage/docker-compose.storage.yml
+
+services:
+  redpanda:
+    image: redpandadata/redpanda:latest
+    container_name: terminal-redpanda
+    restart: always
+    command:
+      - redpanda start
+      - --smp 1
+      - --memory 1G
+      - --reserve-memory 0M
+      - --overprovisioned
+      - --node-id 0
+      - --check=false
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:29092
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+    networks:
+      - the-terminal-network
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster info --brokers localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "29092:19092"
+
+  redpanda-console:
+    image: redpandadata/console:latest
+    container_name: terminal-redpanda-console
+    restart: always
+    environment:
+      KAFKA_BROKERS: redpanda:9092
+    networks:
+      - the-terminal-network
+    ports:
+      - "28080:8080"
+    depends_on:
+      redpanda:
+        condition: service_healthy
+
+  topic-provisioner:
+    image: redpandadata/redpanda:latest
+    container_name: terminal-topic-provisioner
+    volumes:
+      - ./scripts:/scripts
+    entrypoint: ["/bin/sh", "/scripts/provision-topics.sh"]
+    networks:
+      - the-terminal-network
+    depends_on:
+      redpanda:
+        condition: service_healthy
+
+  streaming-analytics:
+    build:
+      context: ../../../
+      dockerfile: services/streaming_analytics/Dockerfile
+    container_name: terminal-streaming-analytics
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - POSTGRES_HOST=postgres
+      - IN_TOPIC=market.yahoo
+      - OUT_TOPIC=market.bars.1m
+    networks:
+      - the-terminal-network
+    depends_on:
+      redpanda:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+networks:
+  the-terminal-network:
+    name: the-terminal-network
+    external: true
+
+volumes:
+  redpanda_data:
+    name: the-terminal-redpanda-data

@@ -1,0 +1,133 @@
+# The Terminal — Registered Source Definitions
+# ============================================
+# This file is the single source of truth for all data sources.
+# Edit this file and restart/reload Dagster to apply changes.
+# Sources removed from this file will be deactivated on next reload.
+#
+# Schema per entry:
+#   adapter_type  (required) - Must match a key in ADAPTER_MAP
+#   identifier    (required) - Ticker symbol or series ID
+#   label         (optional) - Data label, defaults to "main"
+#   description   (optional) - Human-readable series title/description
+#   config        (optional) - Adapter-specific parameters
+#
+# Sources added via register_source_job in Dagster Launchpad are ephemeral:
+# they will be deactivated on the next Dagster reload unless also listed here.
+
+sources:
+  - adapter_type: "yahoo"
+    identifier: "DX-Y.NYB"
+    label: "main"
+    description: "United States Dollar Index (DX-Y.NYB)"
+    config:
+      interval: "1d"
+      period: "max"
+      auto_adjust: true
+  - adapter_type: "fred"
+    identifier: "GDP"
+    label: "main"
+    description: "United States Gross Domestic Product, Billions of Dollars, Seasonally Adjusted Annual Rate (GDP)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "GDPC1"
+    label: "main"
+    description: "United States Real Gross Domestic Product, Billions of Chained 2017 Dollars, Seasonally Adjusted Annual Rate (GDPC1)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "WALCL"
+    label: "main"
+    description: "United States Assets: Total Assets: Total Assets (Less Eliminations from Consolidation): Wednesday Level, Millions of U.S. Dollars, Not Seasonally Adjusted (WALCL)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "WGS10YR"
+    label: "main"
+    description: "United States Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis, Percent, Not Seasonally Adjusted (WGS10YR)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "FYOINT"
+    label: "main"
+    description: "United States Federal Outlays: Interest, Millions of Dollars, Not Seasonally Adjusted (FYOINT)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "FYFSD"
+    label: "main"
+    description: "United States Federal Surplus or Deficit [-], Millions of Dollars, Not Seasonally Adjusted (FYFSD)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "GFDEBTN"
+    label: "main"
+    description: "United States Federal Debt: Total Public Debt, Millions of Dollars, Not Seasonally Adjusted (GFDEBTN)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "PAYEMS"
+    label: "main"
+    description: "United States All Employees, Total Nonfarm, Thousands of Persons, Seasonally Adjusted (PAYEMS)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "WPSFD4131"
+    label: "main"
+    description: "United States Producer Price Index by Commodity: Final Demand: Finished Goods Less Foods and Energy, Index 1982=100, Seasonally Adjusted (WPSFD4131)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "WPSFD49207"
+    label: "main"
+    description: "United States Producer Price Index by Commodity: Final Demand: Finished Goods, Index 1982=100, Seasonally Adjusted (WPSFD49207)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "CPILFESL"
+    label: "main"
+    description: "United States Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average, Index 1982-1984=100, Seasonally Adjusted (CPILFESL)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "CPIAUCSL"
+    label: "main"
+    description: "United States Consumer Price Index for All Urban Consumers: All Items in U.S. City Average, Index 1982-1984=100, Seasonally Adjusted (CPIAUCSL)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "FEDFUNDS"
+    label: "main"
+    description: "United States Federal Funds Effective Rate, Percent, Not Seasonally Adjusted (FEDFUNDS)"
+    config:
+      units: "lin"
+  - adapter_type: "fred"
+    identifier: "M2SL"
+    label: "main"
+    description: "United States M2, Billions of Dollars, Seasonally Adjusted (M2SL)"
+    config:
+      units: "lin"
+  - adapter_type: "census"
+    identifier: "HOUSING_PERMITS"
+    label: "main"
+    description: "United States Building Permits Survey (BPS)"
+    config:
+      seasonally_adj: "yes"
+  - adapter_type: "moneycontrol"
+    identifier: "https://api.moneycontrol.com/mcapi/v1/ecalendar/get-stats-data?calendarId=1414914&duration="
+    label: "main"
+    description: "United States ISM Manufacturing PMI (Business Confidence)"
+    config:
+      duration: ""
+  - adapter_type: "moneycontrol"
+    identifier: "https://api.moneycontrol.com/mcapi/v1/ecalendar/get-stats-data?calendarId=2323704&duration="
+    label: "main"
+    description: "United States Non Manufacturing PMI (Services)"
+    config:
+      duration: ""
+  - adapter_type: "moneycontrol"
+    identifier: "https://api.moneycontrol.com/mcapi/v1/ecalendar/get-stats-data?calendarId=148679&duration="
+    label: "main"
+    description: "United States The University of Michigan consumer sentiment index (Consumer Confidence)"
+    config:
+      duration: ""
