@@ -287,23 +287,6 @@ This structure illustrates the logical organization of the research system. It i
 
 ---
 
-## Screenshots & Technical Demonstrations
-
-This section presents selected visual evidence of the original system's implementation.
-
-The public showcase may include:
-
-- System architecture and component interactions.
-- Data pipeline execution and orchestration.
-- Infrastructure monitoring and observability.
-- Research experiment execution.
-- Analytical outputs and visualizations.
-- Selected code excerpts demonstrating engineering practices.
-
-Screenshots and code samples are selected and sanitized to avoid exposing private infrastructure, credentials, or sensitive implementation details.
-
----
-
 ## Development Philosophy
 
 The Terminal reflects an engineering approach centered on building reliable infrastructure for systematic economic and quantitative research.
