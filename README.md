@@ -7,6 +7,8 @@
 [![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 
+![screenshots](screenshots/combined-image.jpg)
+
 The Terminal is a modular engineering platform designed to support macroeconomic data infrastructure, financial data processing, quantitative research, and reproducible analytical workflows.
 
 It brings together data engineering, workflow orchestration, analytical storage, and quantitative research within a structured architecture.
