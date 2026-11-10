@@ -112,6 +112,28 @@ This separation keeps mathematical computation independent of infrastructure and
 
 ---
 
+## Screenshots & System Overview
+
+The following screenshots demonstrate selected components of the platform, from data source registration and orchestration to dataset inspection and quantitative analysis.
+
+### 1. Dynamic Source Ingestion & Incremental Sync
+![Dynamic Source Ingestion](screenshots/1794274881918.png)
+
+### 2. Data Source Adapter Registry
+![Data Source Adapter Registry](screenshots/1794274886619.png)
+
+### 3. Dagster Asset Lineage
+![Dagster Asset Lineage](screenshots/1794274934127.png)
+
+### 4. Data Pipeline Lineage Dashboard
+![Data Pipeline Lineage Dashboard](screenshots/1794274977774.png)
+
+### 5. Dataset Inspection & Visualization
+![Dataset Inspection](screenshots/1794274988889.png)
+
+### 6. Multi-Indicator Comparison & Overlay
+![Multi-Indicator Comparison](screenshots/1794275421019.png)
+
 ## Technology Stack
 
 The original implementation uses a combination of technologies across different engineering domains.
